@@ -14,8 +14,6 @@ export class QuizAttempt {
   @Column({ length: 255 })
   student_name: string;
 
-  @Column({ type: 'int' })
-  score: number;
 
   @Column({ type: 'int' })
   total_points: number;

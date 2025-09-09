@@ -15,6 +15,8 @@ import { FilesModule } from './modules/files/files.module';
 import { MeetingsModule } from './modules/meetings/meetings.module';
 import { RendezVousModule } from './modules/rendez-vous/rendez-vous.module';
 import { PdpModule } from './modules/pdp/pdp.module';
+import { AnalyticsModule } from './modules/analytics/analytics.module';
+import { NotificationsModule } from './modules/notifications/notifications.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
@@ -37,6 +39,8 @@ import { AppService } from './app.service';
     MeetingsModule,
     RendezVousModule,
     PdpModule,
+    AnalyticsModule,
+    NotificationsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

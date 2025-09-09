@@ -49,22 +49,17 @@ export class UsersController {
         phone: updateData.phone_number || updateData.phone,
         is_active: updateData.isActive,
         is_approved: updateData.isApproved,
-        email_verified: updateData.email_verified,
+        email_verified: updateData.emailVerified,
         last_login: updateData.last_login,
+        
+        // Champs Student (passés au service pour mise à jour de l'entité Student)
+        classLevel: updateData.classLevel,
+        birthDate: updateData.birthDate,
       };
 
-      // Ajouter les champs Student essentiels
-      if (updateData.role === UserRole.STUDENT) {
-        userUpdateData.class_level = updateData.classLevel || updateData.class;
-        userUpdateData.birth_date = updateData.birthDate || updateData.birth_date;
-      }
-      
-      // Ajouter TOUS les champs Parent
-      if (updateData.role === UserRole.PARENT) {
-        userUpdateData.parent_phone_number = updateData.phone_number || updateData.phone;
-        userUpdateData.parent_address = updateData.address;
-        userUpdateData.occupation = updateData.occupation;
-      }
+      // Note: Les champs parent/enfant ne sont pas stockés dans l'entité User
+      // Ils seront gérés via les entités Student et Parent séparément
+      // Les champs classLevel et birthDate sont passés pour mise à jour de l'entité Student
 
       console.log('🔍 Updating user with data:', userUpdateData);
       

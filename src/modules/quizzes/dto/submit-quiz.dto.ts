@@ -10,8 +10,6 @@ export class SubmitQuizDto {
   @IsString()
   student_name: string;
 
-  @IsNumber()
-  score: number;
 
   @IsNumber()
   total_points: number;

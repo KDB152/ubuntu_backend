@@ -253,13 +253,11 @@ let AuthService = class AuthService {
         if (!isPasswordValid) {
             throw new common_1.UnauthorizedException('Email ou mot de passe incorrect');
         }
-        if (user.role !== user_entity_1.UserRole.ADMIN && user.role !== user_entity_1.UserRole.STUDENT) {
-            if (!user.email_verified) {
-                throw new common_1.UnauthorizedException('EMAIL_NOT_VERIFIED');
-            }
-            if (!user.is_approved) {
-                throw new common_1.UnauthorizedException('ACCOUNT_NOT_APPROVED');
-            }
+        if (user.role !== user_entity_1.UserRole.ADMIN && !user.email_verified) {
+            throw new common_1.UnauthorizedException('EMAIL_NOT_VERIFIED');
+        }
+        if (user.role !== user_entity_1.UserRole.ADMIN && !user.is_approved) {
+            throw new common_1.UnauthorizedException('ACCOUNT_NOT_APPROVED');
         }
         let additionalInfo = {};
         if (user.role === user_entity_1.UserRole.STUDENT) {

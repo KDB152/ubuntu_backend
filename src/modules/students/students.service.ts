@@ -8,6 +8,11 @@ import { UpdateStudentDto } from './dto/update-student.dto';
 
 @Injectable()
 export class StudentsService {
+  constructor(
+    @InjectRepository(Student)
+    private studentsRepository: Repository<Student>,
+  ) {}
+
   async findByUserId(userId: number): Promise<Student | null> {
     const student = await this.studentsRepository.findOne({ where: { user_id: userId } });
     
@@ -21,10 +26,6 @@ export class StudentsService {
     
     return student;
   }
-  constructor(
-    @InjectRepository(Student)
-    private studentsRepository: Repository<Student>,
-  ) {}
 
   async createStudent(userId: number, phone?: string): Promise<Student> {
     // Vérifier si l'étudiant existe déjà pour ce user

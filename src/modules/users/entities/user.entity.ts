@@ -86,7 +86,4 @@ export class User {
 
   @OneToOne('Parent', 'user')
   parent: any;
-
-  resetPasswordToken: string;
-  resetPasswordExpiry: Date;
 }

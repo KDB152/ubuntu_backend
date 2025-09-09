@@ -16,14 +16,11 @@ export class Quiz {
   @Column({ length: 100 })
   subject: string; // ex: Histoire, Géographie
 
-  @Column({ length: 50 })
-  level: string; // ex: Seconde, Première, Terminale
+  @Column({ length: 50, nullable: true })
+  level?: string; // ex: Seconde, Première, Terminale
 
-  @Column({ type: 'int', default: 0 })
+  @Column({ type: 'int', default: 10 })
   duration: number; // minutes
-
-  @Column({ type: 'int', default: 0 })
-  total_points: number;
 
   @Column({ type: 'int', default: 0 })
   attempts: number;
@@ -31,14 +28,8 @@ export class Quiz {
   @Column({ type: 'decimal', precision: 5, scale: 2, default: 0 })
   average_score: number;
 
-  @Column({ name: 'pass_score', type: 'int', default: 10 })
-  pass_score: number;
-
   @Column({ type: 'varchar', length: 20, default: 'Brouillon' })
   status: QuizStatus;
-
-  @Column({ type: 'json', nullable: true })
-  tags?: string[];
 
   @Column({ default: false })
   is_time_limited: boolean;
@@ -48,9 +39,6 @@ export class Quiz {
 
   @Column({ default: true })
   show_results: boolean;
-
-  @Column({ default: false })
-  randomize_questions: boolean;
 
   @Column({ type: 'json', nullable: true })
   target_groups?: string[]; // ex: ['Terminale groupe 1', 'Terminale groupe 2']

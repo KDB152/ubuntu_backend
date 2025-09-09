@@ -22,9 +22,6 @@ export class Question {
   @Column({ type: 'text', nullable: true })
   correct_answer?: string; // could be JSON string if needed
 
-  @Column({ type: 'int', default: 1 })
-  points: number;
-
   @Column({ type: 'text', nullable: true })
   explanation?: string;
 }

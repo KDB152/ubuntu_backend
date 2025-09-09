@@ -39,10 +39,6 @@ __decorate([
     __metadata("design:type", String)
 ], Question.prototype, "correct_answer", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'int', default: 1 }),
-    __metadata("design:type", Number)
-], Question.prototype, "points", void 0);
-__decorate([
     (0, typeorm_1.Column)({ type: 'text', nullable: true }),
     __metadata("design:type", String)
 ], Question.prototype, "explanation", void 0);

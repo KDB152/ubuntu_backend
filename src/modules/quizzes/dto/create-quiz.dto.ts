@@ -11,25 +11,13 @@ export class CreateQuizDto {
   @IsString()
   subject: string;
 
-  @IsString()
-  level: string;
-
   @IsOptional()
   @IsNumber()
   duration?: number;
 
   @IsOptional()
-  @IsNumber()
-  pass_score?: number;
-
-  @IsOptional()
   @IsIn(['Publié', 'Brouillon', 'Archivé'])
   status?: 'Publié' | 'Brouillon' | 'Archivé';
-
-  @IsOptional()
-  @IsArray()
-  @IsString({ each: true })
-  tags?: string[];
 
   @IsOptional()
   @IsBoolean()
@@ -43,9 +31,6 @@ export class CreateQuizDto {
   @IsBoolean()
   show_results?: boolean;
 
-  @IsOptional()
-  @IsBoolean()
-  randomize_questions?: boolean;
 
   @IsOptional()
   @IsArray()

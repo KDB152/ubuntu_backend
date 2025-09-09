@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User, UserRole } from './entities/user.entity';
+import { StudentsService } from '../students/students.service';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
@@ -10,6 +11,7 @@ export class UsersService {
   constructor(
     @InjectRepository(User)
     private readonly usersRepository: Repository<User>,
+    private readonly studentsService: StudentsService,
   ) {}
 
   async createUser(data: {
@@ -48,8 +50,9 @@ export class UsersService {
 
   async findById(id: number): Promise<User | null> {
     const user = await this.usersRepository.findOne({ 
-      where: { id },
-      relations: ['student', 'parent']
+      where: { id }
+      // Temporairement désactivé les relations pour éviter les erreurs
+      // relations: ['student', 'parent']
     });
     console.log('🔍 findById result for user', id, ':', user);
     return user;
@@ -119,6 +122,10 @@ export class UsersService {
       if ((data as any).email_verified !== undefined) userData.email_verified = (data as any).email_verified;
       if ((data as any).last_login !== undefined) userData.last_login = (data as any).last_login;
       
+      // Note: Les champs parent/enfant ne sont pas stockés dans l'entité User
+      // Ils seront gérés via les entités Student et Parent séparément
+      // Pour l'instant, on les ignore dans la mise à jour de l'entité User
+      
       // Mapper les champs Student essentiels
       if ((data as any).classLevel !== undefined) studentData.class_level = (data as any).classLevel;
       if ((data as any).birthDate !== undefined) {
@@ -150,9 +157,29 @@ export class UsersService {
         console.log('🔍 No User data to update');
       }
       
-      // Pour l'instant, on se contente de mettre à jour l'entité User
-      // Les entités Student et Parent seront mises à jour via leurs propres services si nécessaire
-      console.log('🔍 Student and Parent entities will be updated via their respective services if needed');
+      // Mettre à jour l'entité Student si c'est un étudiant et qu'il y a des données à mettre à jour
+      if (Object.keys(studentData).length > 0) {
+        console.log('🔍 Updating Student entity with data:', studentData);
+        try {
+          // Récupérer l'étudiant par user_id
+          const student = await this.studentsService.findByUserId(id);
+          if (student) {
+            await this.studentsService.update(student.id, studentData);
+            console.log('🔍 Student updated successfully');
+          } else {
+            console.log('🔍 No student found for user ID:', id);
+          }
+        } catch (error) {
+          console.error('🔍 Error updating student:', error);
+          // Ne pas faire échouer la mise à jour de l'utilisateur si la mise à jour de l'étudiant échoue
+        }
+      }
+      
+      // Mettre à jour l'entité Parent si c'est un parent et qu'il y a des données à mettre à jour
+      if (Object.keys(parentData).length > 0) {
+        console.log('🔍 Parent entity update not implemented yet');
+        // TODO: Implémenter la mise à jour de l'entité Parent
+      }
       
       const updatedUser = await this.findById(id);
       console.log('🔍 Final updated user:', updatedUser);

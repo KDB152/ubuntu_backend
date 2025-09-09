@@ -6,6 +6,5 @@ export declare class Question {
     type: QuestionType;
     options?: string[];
     correct_answer?: string;
-    points: number;
     explanation?: string;
 }

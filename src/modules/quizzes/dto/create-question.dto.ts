@@ -20,10 +20,6 @@ export class CreateQuestionDto {
   correct_answer?: string;
 
   @IsOptional()
-  @IsNumber()
-  points?: number;
-
-  @IsOptional()
   @IsString()
   explanation?: string;
 }

@@ -33,10 +33,6 @@ __decorate([
 __decorate([
     (0, typeorm_1.Column)({ type: 'int' }),
     __metadata("design:type", Number)
-], QuizAttempt.prototype, "score", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ type: 'int' }),
-    __metadata("design:type", Number)
 ], QuizAttempt.prototype, "total_points", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: 'int' }),

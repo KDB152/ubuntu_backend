@@ -18,6 +18,9 @@ const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const student_entity_1 = require("./entities/student.entity");
 let StudentsService = class StudentsService {
+    constructor(studentsRepository) {
+        this.studentsRepository = studentsRepository;
+    }
     async findByUserId(userId) {
         const student = await this.studentsRepository.findOne({ where: { user_id: userId } });
         if (student && student.birth_date) {
@@ -27,9 +30,6 @@ let StudentsService = class StudentsService {
             student.birth_date = `${year}-${month}-${day}T00:00:00.000Z`;
         }
         return student;
-    }
-    constructor(studentsRepository) {
-        this.studentsRepository = studentsRepository;
     }
     async createStudent(userId, phone) {
         let student = await this.studentsRepository.findOne({

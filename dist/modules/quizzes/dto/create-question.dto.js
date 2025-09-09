@@ -39,11 +39,6 @@ __decorate([
 ], CreateQuestionDto.prototype, "correct_answer", void 0);
 __decorate([
     (0, class_validator_1.IsOptional)(),
-    (0, class_validator_1.IsNumber)(),
-    __metadata("design:type", Number)
-], CreateQuestionDto.prototype, "points", void 0);
-__decorate([
-    (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], CreateQuestionDto.prototype, "explanation", void 0);

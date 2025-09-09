@@ -31,17 +31,13 @@ __decorate([
     __metadata("design:type", String)
 ], Quiz.prototype, "subject", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ length: 50 }),
+    (0, typeorm_1.Column)({ length: 50, nullable: true }),
     __metadata("design:type", String)
 ], Quiz.prototype, "level", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'int', default: 0 }),
+    (0, typeorm_1.Column)({ type: 'int', default: 10 }),
     __metadata("design:type", Number)
 ], Quiz.prototype, "duration", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ type: 'int', default: 0 }),
-    __metadata("design:type", Number)
-], Quiz.prototype, "total_points", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: 'int', default: 0 }),
     __metadata("design:type", Number)
@@ -51,17 +47,9 @@ __decorate([
     __metadata("design:type", Number)
 ], Quiz.prototype, "average_score", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ name: 'pass_score', type: 'int', default: 10 }),
-    __metadata("design:type", Number)
-], Quiz.prototype, "pass_score", void 0);
-__decorate([
     (0, typeorm_1.Column)({ type: 'varchar', length: 20, default: 'Brouillon' }),
     __metadata("design:type", String)
 ], Quiz.prototype, "status", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ type: 'json', nullable: true }),
-    __metadata("design:type", Array)
-], Quiz.prototype, "tags", void 0);
 __decorate([
     (0, typeorm_1.Column)({ default: false }),
     __metadata("design:type", Boolean)
@@ -74,10 +62,6 @@ __decorate([
     (0, typeorm_1.Column)({ default: true }),
     __metadata("design:type", Boolean)
 ], Quiz.prototype, "show_results", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ default: false }),
-    __metadata("design:type", Boolean)
-], Quiz.prototype, "randomize_questions", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: 'json', nullable: true }),
     __metadata("design:type", Array)

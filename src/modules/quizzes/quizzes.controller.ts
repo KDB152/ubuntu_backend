@@ -43,6 +43,11 @@ export class QuizzesController {
     );
   }
 
+  @Get('attempts/recent')
+  getRecentAttempts() {
+    return this.quizzesService.getRecentAttempts();
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.quizzesService.findOne(parseInt(id));

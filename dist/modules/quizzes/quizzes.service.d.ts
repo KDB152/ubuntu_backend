@@ -33,18 +33,14 @@ export declare class QuizzesService {
         title: string;
         description?: string;
         subject: string;
-        level: string;
+        level?: string;
         duration: number;
-        total_points: number;
         attempts: number;
         average_score: number;
-        pass_score: number;
         status: import("./entities/quiz.entity").QuizStatus;
-        tags?: string[];
         is_time_limited: boolean;
         allow_retake: boolean;
         show_results: boolean;
-        randomize_questions: boolean;
         target_groups?: string[];
         created_at: Date;
         updated_at: Date;
@@ -56,8 +52,8 @@ export declare class QuizzesService {
     }>;
     findQuestions(quizId: number): Promise<{
         id: any;
-        question_text: any;
-        question_type: any;
+        question: any;
+        type: any;
         points: any;
         correct_answer: any;
         options: any;
@@ -74,9 +70,9 @@ export declare class QuizzesService {
         success: boolean;
         message?: undefined;
     }>;
-    private updateQuizTotalPoints;
     listAttempts(quizId?: number): Promise<QuizAttempt[]>;
     listStudentAttempts(quizId?: number, studentId?: number): Promise<QuizAttempt[]>;
     submitAttempt(dto: SubmitQuizDto, studentId?: number): Promise<any>;
     getAttemptAnswers(attemptId: number): Promise<any>;
+    getRecentAttempts(): Promise<QuizAttempt[]>;
 }

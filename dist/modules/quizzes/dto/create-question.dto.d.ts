@@ -4,6 +4,5 @@ export declare class CreateQuestionDto {
     type: 'multiple' | 'single' | 'text' | 'boolean';
     options?: string[];
     correct_answer?: string;
-    points?: number;
     explanation?: string;
 }

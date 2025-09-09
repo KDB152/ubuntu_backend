@@ -51,15 +51,11 @@ export class QuizzesService {
       title: dto.title,
       description: dto.description,
       subject: dto.subject,
-      level: dto.level,
-      duration: dto.duration ?? 0,
-      pass_score: dto.pass_score ?? 10,
+      duration: dto.duration ?? 10,
       status: dto.status ?? 'Brouillon',
-      tags: dto.tags,
       is_time_limited: dto.is_time_limited ?? false,
       allow_retake: dto.allow_retake ?? false,
       show_results: dto.show_results ?? true,
-      randomize_questions: dto.randomize_questions ?? false,
       target_groups: dto.target_groups,
     });
     return this.quizRepo.save(entity);
@@ -71,6 +67,11 @@ export class QuizzesService {
   }
 
   async remove(id: number) {
+    // Validation de l'ID
+    if (!id || isNaN(id)) {
+      throw new Error('ID de quiz invalide');
+    }
+    
     // Delete all questions first
     await this.questionRepo.delete({ quiz_id: id });
     // Delete all attempts
@@ -98,8 +99,8 @@ export class QuizzesService {
       // Mapper les colonnes pour correspondre à ce que le frontend attend
       return questions.map(q => ({
         id: q.id,
-        question_text: q.question,        // question → question_text
-        question_type: q.type,            // type → question_type
+        question: q.question,             // Garder 'question' pour le frontend
+        type: q.type,                     // Garder 'type' pour le frontend
         points: q.points,
         correct_answer: q.correct_answer,
         options: q.options ? q.options.split(',') : [],
@@ -133,14 +134,10 @@ export class QuizzesService {
       type: dto.type,
       options: dto.options,
       correct_answer: dto.correct_answer,
-      points: dto.points ?? 1,
       explanation: dto.explanation,
     });
     
     const savedQuestion = await this.questionRepo.save(entity);
-    
-    // Update quiz total points
-    await this.updateQuizTotalPoints(dto.quiz_id);
     
     return savedQuestion;
   }
@@ -149,10 +146,6 @@ export class QuizzesService {
     await this.questionRepo.update(questionId, dto as any);
     const updatedQuestion = await this.findQuestion(questionId);
     
-    // Update quiz total points
-    if (updatedQuestion) {
-      await this.updateQuizTotalPoints(updatedQuestion.quiz_id);
-    }
     
     return updatedQuestion;
   }
@@ -163,18 +156,10 @@ export class QuizzesService {
     
     await this.questionRepo.delete(questionId);
     
-    // Update quiz total points
-    await this.updateQuizTotalPoints(question.quiz_id);
     
     return { success: true };
   }
 
-  private async updateQuizTotalPoints(quizId: number) {
-    const questions = await this.findQuestions(quizId);
-    const totalPoints = questions.reduce((sum, q) => sum + q.points, 0);
-    
-    await this.quizRepo.update(quizId, { total_points: totalPoints });
-  }
 
   async listAttempts(quizId?: number) {
     if (quizId) return this.attemptRepo.find({ where: { quiz_id: quizId }, order: { id: 'DESC' } });
@@ -220,14 +205,13 @@ export class QuizzesService {
     try {
       const insertQuery = `
         INSERT INTO quiz_attempts 
-        (quiz_id, student_id, score, student_name, total_points, percentage, time_spent, completed_at, answers)
-        VALUES (?, ?, ?, ?, ?, ?, ?, NOW(), ?)
+        (quiz_id, student_id, student_name, total_points, percentage, time_spent, answers)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
       `;
       
       const insertValues = [
         dto.quiz_id,
         dto.student_id,
-        dto.score,
         dto.student_name,
         dto.total_points,
         dto.percentage,
@@ -268,5 +252,14 @@ export class QuizzesService {
     
     // Retourner les réponses de l'étudiant
     return attempt.answers || {};
+  }
+
+  async getRecentAttempts() {
+    // Retourner les 10 dernières tentatives de quiz
+    return this.attemptRepo.find({
+      order: { completed_at: 'DESC' },
+      take: 10,
+      relations: ['quiz']
+    });
   }
 }

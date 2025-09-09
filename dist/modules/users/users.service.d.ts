@@ -1,8 +1,10 @@
 import { Repository } from 'typeorm';
 import { User, UserRole } from './entities/user.entity';
+import { StudentsService } from '../students/students.service';
 export declare class UsersService {
     private readonly usersRepository;
-    constructor(usersRepository: Repository<User>);
+    private readonly studentsService;
+    constructor(usersRepository: Repository<User>, studentsService: StudentsService);
     createUser(data: {
         email: string;
         password: string;

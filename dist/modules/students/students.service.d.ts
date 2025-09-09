@@ -4,8 +4,8 @@ import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
 export declare class StudentsService {
     private studentsRepository;
-    findByUserId(userId: number): Promise<Student | null>;
     constructor(studentsRepository: Repository<Student>);
+    findByUserId(userId: number): Promise<Student | null>;
     createStudent(userId: number, phone?: string): Promise<Student>;
     findAll({ page, limit }: {
         page?: number;

@@ -306,15 +306,14 @@ export class AuthService {
       throw new UnauthorizedException('Email ou mot de passe incorrect');
     }
 
-    // Pour les admins et étudiants, contourner temporairement les vérifications
-    if (user.role !== UserRole.ADMIN && user.role !== UserRole.STUDENT) {
-      if (!user.email_verified) {
-        throw new UnauthorizedException('EMAIL_NOT_VERIFIED');
-      }
+    // Vérifier que l'email est vérifié (sauf pour les admins)
+    if (user.role !== UserRole.ADMIN && !user.email_verified) {
+      throw new UnauthorizedException('EMAIL_NOT_VERIFIED');
+    }
 
-      if (!user.is_approved) {
-        throw new UnauthorizedException('ACCOUNT_NOT_APPROVED');
-      }
+    // Vérifier que le compte est approuvé (sauf pour les admins)
+    if (user.role !== UserRole.ADMIN && !user.is_approved) {
+      throw new UnauthorizedException('ACCOUNT_NOT_APPROVED');
     }
     // Récupérer les informations supplémentaires selon le rôle
     let additionalInfo = {};

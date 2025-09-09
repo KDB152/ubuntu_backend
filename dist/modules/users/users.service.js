@@ -17,10 +17,12 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("typeorm");
 const typeorm_2 = require("@nestjs/typeorm");
 const user_entity_1 = require("./entities/user.entity");
+const students_service_1 = require("../students/students.service");
 const bcrypt = require("bcrypt");
 let UsersService = class UsersService {
-    constructor(usersRepository) {
+    constructor(usersRepository, studentsService) {
         this.usersRepository = usersRepository;
+        this.studentsService = studentsService;
     }
     async createUser(data) {
         const hashedPassword = await bcrypt.hash(data.password, 10);
@@ -44,8 +46,7 @@ let UsersService = class UsersService {
     }
     async findById(id) {
         const user = await this.usersRepository.findOne({
-            where: { id },
-            relations: ['student', 'parent']
+            where: { id }
         });
         console.log('🔍 findById result for user', id, ':', user);
         return user;
@@ -131,7 +132,25 @@ let UsersService = class UsersService {
             else {
                 console.log('🔍 No User data to update');
             }
-            console.log('🔍 Student and Parent entities will be updated via their respective services if needed');
+            if (Object.keys(studentData).length > 0) {
+                console.log('🔍 Updating Student entity with data:', studentData);
+                try {
+                    const student = await this.studentsService.findByUserId(id);
+                    if (student) {
+                        await this.studentsService.update(student.id, studentData);
+                        console.log('🔍 Student updated successfully');
+                    }
+                    else {
+                        console.log('🔍 No student found for user ID:', id);
+                    }
+                }
+                catch (error) {
+                    console.error('🔍 Error updating student:', error);
+                }
+            }
+            if (Object.keys(parentData).length > 0) {
+                console.log('🔍 Parent entity update not implemented yet');
+            }
             const updatedUser = await this.findById(id);
             console.log('🔍 Final updated user:', updatedUser);
             return updatedUser;
@@ -151,6 +170,7 @@ exports.UsersService = UsersService;
 exports.UsersService = UsersService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_2.InjectRepository)(user_entity_1.User)),
-    __metadata("design:paramtypes", [typeorm_1.Repository])
+    __metadata("design:paramtypes", [typeorm_1.Repository,
+        students_service_1.StudentsService])
 ], UsersService);
 //# sourceMappingURL=users.service.js.map

@@ -57,15 +57,11 @@ let QuizzesService = class QuizzesService {
             title: dto.title,
             description: dto.description,
             subject: dto.subject,
-            level: dto.level,
-            duration: dto.duration ?? 0,
-            pass_score: dto.pass_score ?? 10,
+            duration: dto.duration ?? 10,
             status: dto.status ?? 'Brouillon',
-            tags: dto.tags,
             is_time_limited: dto.is_time_limited ?? false,
             allow_retake: dto.allow_retake ?? false,
             show_results: dto.show_results ?? true,
-            randomize_questions: dto.randomize_questions ?? false,
             target_groups: dto.target_groups,
         });
         return this.quizRepo.save(entity);
@@ -75,6 +71,9 @@ let QuizzesService = class QuizzesService {
         return this.findOne(id);
     }
     async remove(id) {
+        if (!id || isNaN(id)) {
+            throw new Error('ID de quiz invalide');
+        }
         await this.questionRepo.delete({ quiz_id: id });
         await this.attemptRepo.delete({ quiz_id: id });
         await this.quizRepo.delete(id);
@@ -89,8 +88,8 @@ let QuizzesService = class QuizzesService {
             }
             return questions.map(q => ({
                 id: q.id,
-                question_text: q.question,
-                question_type: q.type,
+                question: q.question,
+                type: q.type,
                 points: q.points,
                 correct_answer: q.correct_answer,
                 options: q.options ? q.options.split(',') : [],
@@ -120,19 +119,14 @@ let QuizzesService = class QuizzesService {
             type: dto.type,
             options: dto.options,
             correct_answer: dto.correct_answer,
-            points: dto.points ?? 1,
             explanation: dto.explanation,
         });
         const savedQuestion = await this.questionRepo.save(entity);
-        await this.updateQuizTotalPoints(dto.quiz_id);
         return savedQuestion;
     }
     async updateQuestion(questionId, dto) {
         await this.questionRepo.update(questionId, dto);
         const updatedQuestion = await this.findQuestion(questionId);
-        if (updatedQuestion) {
-            await this.updateQuizTotalPoints(updatedQuestion.quiz_id);
-        }
         return updatedQuestion;
     }
     async removeQuestion(questionId) {
@@ -140,13 +134,7 @@ let QuizzesService = class QuizzesService {
         if (!question)
             return { success: false, message: 'Question not found' };
         await this.questionRepo.delete(questionId);
-        await this.updateQuizTotalPoints(question.quiz_id);
         return { success: true };
-    }
-    async updateQuizTotalPoints(quizId) {
-        const questions = await this.findQuestions(quizId);
-        const totalPoints = questions.reduce((sum, q) => sum + q.points, 0);
-        await this.quizRepo.update(quizId, { total_points: totalPoints });
     }
     async listAttempts(quizId) {
         if (quizId)
@@ -183,13 +171,12 @@ let QuizzesService = class QuizzesService {
         try {
             const insertQuery = `
         INSERT INTO quiz_attempts 
-        (quiz_id, student_id, score, student_name, total_points, percentage, time_spent, completed_at, answers)
-        VALUES (?, ?, ?, ?, ?, ?, ?, NOW(), ?)
+        (quiz_id, student_id, student_name, total_points, percentage, time_spent, answers)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
       `;
             const insertValues = [
                 dto.quiz_id,
                 dto.student_id,
-                dto.score,
                 dto.student_name,
                 dto.total_points,
                 dto.percentage,
@@ -220,6 +207,13 @@ let QuizzesService = class QuizzesService {
             throw new Error('Tentative non trouvée');
         }
         return attempt.answers || {};
+    }
+    async getRecentAttempts() {
+        return this.attemptRepo.find({
+            order: { completed_at: 'DESC' },
+            take: 10,
+            relations: ['quiz']
+        });
     }
 };
 exports.QuizzesService = QuizzesService;

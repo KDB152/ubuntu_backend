@@ -23,6 +23,8 @@ const files_module_1 = require("./modules/files/files.module");
 const meetings_module_1 = require("./modules/meetings/meetings.module");
 const rendez_vous_module_1 = require("./modules/rendez-vous/rendez-vous.module");
 const pdp_module_1 = require("./modules/pdp/pdp.module");
+const analytics_module_1 = require("./modules/analytics/analytics.module");
+const notifications_module_1 = require("./modules/notifications/notifications.module");
 const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
 let AppModule = class AppModule {
@@ -48,6 +50,8 @@ exports.AppModule = AppModule = __decorate([
             meetings_module_1.MeetingsModule,
             rendez_vous_module_1.RendezVousModule,
             pdp_module_1.PdpModule,
+            analytics_module_1.AnalyticsModule,
+            notifications_module_1.NotificationsModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],

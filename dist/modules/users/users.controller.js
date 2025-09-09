@@ -16,7 +16,6 @@ exports.UsersController = void 0;
 const common_1 = require("@nestjs/common");
 const users_service_1 = require("./users.service");
 const jwt_auth_guard_1 = require("../../common/guards/jwt-auth.guard");
-const user_entity_1 = require("./entities/user.entity");
 let UsersController = class UsersController {
     constructor(usersService) {
         this.usersService = usersService;
@@ -51,18 +50,11 @@ let UsersController = class UsersController {
                 phone: updateData.phone_number || updateData.phone,
                 is_active: updateData.isActive,
                 is_approved: updateData.isApproved,
-                email_verified: updateData.email_verified,
+                email_verified: updateData.emailVerified,
                 last_login: updateData.last_login,
+                classLevel: updateData.classLevel,
+                birthDate: updateData.birthDate,
             };
-            if (updateData.role === user_entity_1.UserRole.STUDENT) {
-                userUpdateData.class_level = updateData.classLevel || updateData.class;
-                userUpdateData.birth_date = updateData.birthDate || updateData.birth_date;
-            }
-            if (updateData.role === user_entity_1.UserRole.PARENT) {
-                userUpdateData.parent_phone_number = updateData.phone_number || updateData.phone;
-                userUpdateData.parent_address = updateData.address;
-                userUpdateData.occupation = updateData.occupation;
-            }
             console.log('🔍 Updating user with data:', userUpdateData);
             const result = await this.usersService.update(userId, userUpdateData);
             console.log('🔍 User updated successfully:', result);

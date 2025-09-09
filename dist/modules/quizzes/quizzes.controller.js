@@ -38,6 +38,9 @@ let QuizzesController = class QuizzesController {
     listStudentAttempts(quizId, studentId) {
         return this.quizzesService.listStudentAttempts(quizId ? parseInt(quizId) : undefined, studentId ? parseInt(studentId) : undefined);
     }
+    getRecentAttempts() {
+        return this.quizzesService.getRecentAttempts();
+    }
     findOne(id) {
         return this.quizzesService.findOne(parseInt(id));
     }
@@ -110,6 +113,12 @@ __decorate([
     __metadata("design:paramtypes", [String, String]),
     __metadata("design:returntype", void 0)
 ], QuizzesController.prototype, "listStudentAttempts", null);
+__decorate([
+    (0, common_1.Get)('attempts/recent'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], QuizzesController.prototype, "getRecentAttempts", null);
 __decorate([
     (0, common_1.Get)(':id'),
     __param(0, (0, common_1.Param)('id')),
