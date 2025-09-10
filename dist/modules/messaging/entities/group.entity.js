@@ -11,7 +11,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Group = void 0;
 const typeorm_1 = require("typeorm");
-const group_participant_entity_1 = require("./group-participant.entity");
 let Group = class Group {
 };
 exports.Group = Group;
@@ -47,10 +46,6 @@ __decorate([
     (0, typeorm_1.UpdateDateColumn)(),
     __metadata("design:type", Date)
 ], Group.prototype, "updated_at", void 0);
-__decorate([
-    (0, typeorm_1.OneToMany)(() => group_participant_entity_1.GroupParticipant, participant => participant.group),
-    __metadata("design:type", Array)
-], Group.prototype, "participants", void 0);
 exports.Group = Group = __decorate([
     (0, typeorm_1.Entity)('groups')
 ], Group);

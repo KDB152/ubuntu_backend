@@ -1,4 +1,3 @@
-import { GroupParticipant } from './group-participant.entity';
 export declare class Group {
     id: number;
     name: string;
@@ -8,5 +7,4 @@ export declare class Group {
     is_active: boolean;
     created_at: Date;
     updated_at: Date;
-    participants: GroupParticipant[];
 }

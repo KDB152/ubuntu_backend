@@ -6,4 +6,12 @@ export declare class RendezVousService {
     getRendezVousByParentId(parentId: string, status?: string): Promise<RendezVous[]>;
     getAllRendezVous(status?: string): Promise<RendezVous[]>;
     getRendezVousById(id: number): Promise<RendezVous>;
+    updateRendezVous(id: number, updateData: {
+        status: string;
+        adminReason?: string;
+        updatedAt?: string;
+    }): Promise<RendezVous>;
+    deleteRendezVous(id: number): Promise<{
+        message: string;
+    }>;
 }

@@ -37,4 +37,38 @@ export class RendezVousService {
       where: { id }
     });
   }
+
+  async updateRendezVous(id: number, updateData: { status: string; adminReason?: string; updatedAt?: string }) {
+    const rendezVous = await this.rendezVousRepository.findOne({
+      where: { id }
+    });
+
+    if (!rendezVous) {
+      throw new Error('Rendez-vous non trouvé');
+    }
+
+    // Mettre à jour les champs
+    rendezVous.status = updateData.status;
+    if (updateData.adminReason !== undefined) {
+      rendezVous.admin_reason = updateData.adminReason;
+    }
+    if (updateData.updatedAt) {
+      rendezVous.updated_at = new Date(updateData.updatedAt);
+    }
+
+    return this.rendezVousRepository.save(rendezVous);
+  }
+
+  async deleteRendezVous(id: number) {
+    const rendezVous = await this.rendezVousRepository.findOne({
+      where: { id }
+    });
+
+    if (!rendezVous) {
+      throw new Error('Rendez-vous non trouvé');
+    }
+
+    await this.rendezVousRepository.delete(id);
+    return { message: 'Rendez-vous supprimé avec succès' };
+  }
 }

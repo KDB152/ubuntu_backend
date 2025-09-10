@@ -34,6 +34,20 @@ let RendezVousController = class RendezVousController {
         }
         return [];
     }
+    async updateRendezVous(id, updateData, req) {
+        const currentUserRole = req.user.role;
+        if (currentUserRole !== 'admin') {
+            throw new Error('Seul l\'administrateur peut modifier les rendez-vous');
+        }
+        return this.rendezVousService.updateRendezVous(parseInt(id), updateData);
+    }
+    async deleteRendezVous(id, req) {
+        const currentUserRole = req.user.role;
+        if (currentUserRole !== 'admin') {
+            throw new Error('Seul l\'administrateur peut supprimer les rendez-vous');
+        }
+        return this.rendezVousService.deleteRendezVous(parseInt(id));
+    }
 };
 exports.RendezVousController = RendezVousController;
 __decorate([
@@ -45,6 +59,23 @@ __decorate([
     __metadata("design:paramtypes", [Object, String, String]),
     __metadata("design:returntype", Promise)
 ], RendezVousController.prototype, "getRendezVous", null);
+__decorate([
+    (0, common_1.Put)(':id'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)()),
+    __param(2, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object, Object]),
+    __metadata("design:returntype", Promise)
+], RendezVousController.prototype, "updateRendezVous", null);
+__decorate([
+    (0, common_1.Delete)(':id'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", Promise)
+], RendezVousController.prototype, "deleteRendezVous", null);
 exports.RendezVousController = RendezVousController = __decorate([
     (0, common_1.Controller)('api/rendez-vous'),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),

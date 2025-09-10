@@ -1,5 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
-import { GroupParticipant } from './group-participant.entity';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity('groups')
 export class Group {
@@ -27,7 +26,5 @@ export class Group {
   @UpdateDateColumn()
   updated_at: Date;
 
-  // Relations
-  @OneToMany(() => GroupParticipant, participant => participant.group)
-  participants: GroupParticipant[];
+  // Relations supprimées - table group_participants supprimée
 }

@@ -1,4 +1,4 @@
-import { Controller, Get, Query, UseGuards, Req } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Query, Body, Param, UseGuards, Req } from '@nestjs/common';
 import { RendezVousService } from './rendez-vous.service';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 
@@ -30,5 +30,36 @@ export class RendezVousController {
     }
 
     return [];
+  }
+
+  @Put(':id')
+  async updateRendezVous(
+    @Param('id') id: string,
+    @Body() updateData: { status: string; adminReason?: string; updatedAt?: string },
+    @Req() req: any
+  ) {
+    const currentUserRole = req.user.role;
+
+    // Seul l'admin peut modifier les rendez-vous
+    if (currentUserRole !== 'admin') {
+      throw new Error('Seul l\'administrateur peut modifier les rendez-vous');
+    }
+
+    return this.rendezVousService.updateRendezVous(parseInt(id), updateData);
+  }
+
+  @Delete(':id')
+  async deleteRendezVous(
+    @Param('id') id: string,
+    @Req() req: any
+  ) {
+    const currentUserRole = req.user.role;
+
+    // Seul l'admin peut supprimer les rendez-vous
+    if (currentUserRole !== 'admin') {
+      throw new Error('Seul l\'administrateur peut supprimer les rendez-vous');
+    }
+
+    return this.rendezVousService.deleteRendezVous(parseInt(id));
   }
 }
