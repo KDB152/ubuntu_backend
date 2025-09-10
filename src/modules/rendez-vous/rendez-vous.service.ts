@@ -44,7 +44,7 @@ export class RendezVousService {
     });
 
     if (!rendezVous) {
-      throw new Error('Rendez-vous non trouvé');
+      throw new Error('Le rendez-vous demandé n\'existe pas');
     }
 
     // Mettre à jour les champs
@@ -65,7 +65,7 @@ export class RendezVousService {
     });
 
     if (!rendezVous) {
-      throw new Error('Rendez-vous non trouvé');
+      throw new Error('Le rendez-vous demandé n\'existe pas');
     }
 
     await this.rendezVousRepository.delete(id);

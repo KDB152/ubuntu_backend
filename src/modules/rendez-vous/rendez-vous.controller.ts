@@ -42,7 +42,7 @@ export class RendezVousController {
 
     // Seul l'admin peut modifier les rendez-vous
     if (currentUserRole !== 'admin') {
-      throw new Error('Seul l\'administrateur peut modifier les rendez-vous');
+      throw new Error('Seuls les administrateurs peuvent modifier les rendez-vous');
     }
 
     return this.rendezVousService.updateRendezVous(parseInt(id), updateData);
@@ -57,7 +57,7 @@ export class RendezVousController {
 
     // Seul l'admin peut supprimer les rendez-vous
     if (currentUserRole !== 'admin') {
-      throw new Error('Seul l\'administrateur peut supprimer les rendez-vous');
+      throw new Error('Seuls les administrateurs peuvent supprimer les rendez-vous');
     }
 
     return this.rendezVousService.deleteRendezVous(parseInt(id));
