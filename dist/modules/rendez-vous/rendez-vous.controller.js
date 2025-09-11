@@ -37,14 +37,14 @@ let RendezVousController = class RendezVousController {
     async updateRendezVous(id, updateData, req) {
         const currentUserRole = req.user.role;
         if (currentUserRole !== 'admin') {
-            throw new Error('Seul l\'administrateur peut modifier les rendez-vous');
+            throw new Error('Seuls les administrateurs peuvent modifier les rendez-vous');
         }
         return this.rendezVousService.updateRendezVous(parseInt(id), updateData);
     }
     async deleteRendezVous(id, req) {
         const currentUserRole = req.user.role;
         if (currentUserRole !== 'admin') {
-            throw new Error('Seul l\'administrateur peut supprimer les rendez-vous');
+            throw new Error('Seuls les administrateurs peuvent supprimer les rendez-vous');
         }
         return this.rendezVousService.deleteRendezVous(parseInt(id));
     }

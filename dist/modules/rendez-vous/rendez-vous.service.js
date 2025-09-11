@@ -51,7 +51,7 @@ let RendezVousService = class RendezVousService {
             where: { id }
         });
         if (!rendezVous) {
-            throw new Error('Rendez-vous non trouvé');
+            throw new Error('Le rendez-vous demandé n\'existe pas');
         }
         rendezVous.status = updateData.status;
         if (updateData.adminReason !== undefined) {
@@ -67,7 +67,7 @@ let RendezVousService = class RendezVousService {
             where: { id }
         });
         if (!rendezVous) {
-            throw new Error('Rendez-vous non trouvé');
+            throw new Error('Le rendez-vous demandé n\'existe pas');
         }
         await this.rendezVousRepository.delete(id);
         return { message: 'Rendez-vous supprimé avec succès' };
