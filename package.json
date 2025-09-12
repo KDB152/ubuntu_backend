@@ -4,10 +4,12 @@
   "description": "Backend API for Chrono_Carto educational platform",
   "scripts": {
     "build": "nest build",
+    "dev:network": "nest start --watch --host 0.0.0.0",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
+    "start:dev:network": "nest start --watch --host 0.0.0.0",
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
