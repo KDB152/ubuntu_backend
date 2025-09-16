@@ -370,7 +370,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], MessagingController.prototype, "downloadFile", null);
 exports.MessagingController = MessagingController = __decorate([
-    (0, common_1.Controller)('api/messaging'),
+    (0, common_1.Controller)('messaging'),
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     __metadata("design:paramtypes", [messaging_service_1.MessagingService,
         simplified_messaging_service_1.SimplifiedMessagingService])
