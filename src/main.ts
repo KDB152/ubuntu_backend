@@ -5,11 +5,34 @@ import { AppModule } from './app.module';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
 import 'dotenv/config'; // Import and call config from dotenv
+import { SecurityHeadersMiddleware } from './common/security/security-headers.middleware';
+import { RateLimiterMiddleware } from './common/security/rate-limiter.middleware';
+import { CsrfMiddleware } from './common/security/csrf.middleware';
+import helmet from 'helmet';
 
 async function bootstrap() {
   const logger = new Logger('Bootstrap');
   
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
+
+  // Security middleware
+  app.use(helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'", "'unsafe-inline'"],
+        styleSrc: ["'self'", "'unsafe-inline'"],
+        imgSrc: ["'self'", "data:", "https:"],
+        connectSrc: ["'self'", "http://localhost:3001"],
+      },
+    },
+    crossOriginEmbedderPolicy: false,
+  }));
+
+  // Apply security middleware
+  app.use(new SecurityHeadersMiddleware().use.bind(new SecurityHeadersMiddleware()));
+  app.use(new RateLimiterMiddleware().use.bind(new RateLimiterMiddleware()));
+  app.use(new CsrfMiddleware().use.bind(new CsrfMiddleware()));
 
   // Configuration pour servir les fichiers statiques
   app.useStaticAssets(join(__dirname, '..', 'uploads'), {
@@ -22,18 +45,23 @@ async function bootstrap() {
       'http://localhost:3000',
       'http://localhost:3001',
       'http://192.168.1.11:3000',
-      'http://192.168.1.11:3001'
+      'http://192.168.1.11:3001',
+      process.env.FRONTEND_URL || 'http://localhost:3000'
     ],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
   });
 
-  // Pipes de validation
+  // Pipes de validation with enhanced security
   app.useGlobalPipes(new ValidationPipe({
     whitelist: true,
-    forbidNonWhitelisted: false,
+    forbidNonWhitelisted: true, // Reject unknown properties
     transform: true,
+    transformOptions: {
+      enableImplicitConversion: false, // Disable automatic type conversion
+    },
+    disableErrorMessages: process.env.NODE_ENV === 'production', // Hide detailed errors in production
   }));
 
   const port = process.env.PORT || 3001;
