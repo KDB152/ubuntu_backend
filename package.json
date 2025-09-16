@@ -5,6 +5,7 @@
   "scripts": {
     "build": "nest build",
     "dev:network": "nest start --watch --host 0.0.0.0",
+    "start:ubuntu": "nest start --host 0.0.0.0",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",

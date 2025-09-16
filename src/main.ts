@@ -23,7 +23,7 @@ async function bootstrap() {
         scriptSrc: ["'self'", "'unsafe-inline'"],
         styleSrc: ["'self'", "'unsafe-inline'"],
         imgSrc: ["'self'", "data:", "https:"],
-        connectSrc: ["'self'", "http://localhost:3001"],
+        connectSrc: ["'self'", "http://localhost:3001", "http://51.77.195.224:3001"],
       },
     },
     crossOriginEmbedderPolicy: false,
@@ -46,7 +46,9 @@ async function bootstrap() {
       'http://localhost:3001',
       'http://192.168.1.11:3000',
       'http://192.168.1.11:3001',
-      process.env.FRONTEND_URL || 'http://localhost:3000'
+      'http://51.77.195.224:3000',
+      'http://51.77.195.224:3001',
+      process.env.FRONTEND_URL || 'http://51.77.195.224:3000'
     ],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
@@ -68,6 +70,7 @@ async function bootstrap() {
   await app.listen(port, '0.0.0.0');
   
   logger.log(`🚀 Serveur démarré sur http://0.0.0.0:${port}`);
+  logger.log(`🌐 Accessible sur http://51.77.195.224:${port}`);
   logger.log(`📧 Email configuré: ${process.env.EMAIL_USER}`);
   logger.log(`🌐 Frontend URL: ${process.env.FRONTEND_URL}`);
   logger.log(`🗄️ Base de données: ${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`);

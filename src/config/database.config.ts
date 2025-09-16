@@ -6,10 +6,10 @@ dotenv.config();
 
 export const databaseConfig = {
   type: 'mysql' as const,
-  host: process.env.DB_HOST || 'localhost',
+  host: process.env.DB_HOST || '51.77.195.224',
   port: parseInt(process.env.DB_PORT) || 3306,
-  username: process.env.DB_USERNAME || 'root',
-  password: process.env.DB_PASSWORD || '',
+  username: process.env.DB_USERNAME || 'chrono_carto',
+  password: process.env.DB_PASSWORD || 'Abu3soib2004@',
   database: process.env.DB_NAME || 'chrono_carto',
   entities: ['dist/**/*.entity{.ts,.js}'],
   migrations: ['dist/src/migrations/*.js'],
