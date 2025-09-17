@@ -127,7 +127,7 @@ export class PdpService {
     if (!pdp) return null;
     
     // Retourner l'URL complète avec le port du backend
-    const backendUrl = process.env.BACKEND_URL || 'http://localhost:3001';
+    const backendUrl = process.env.BACKEND_URL || 'http://51.77.195.224:3001';
     return `${backendUrl}/uploads/profiles/${pdp.storedName}`;
   }
 }

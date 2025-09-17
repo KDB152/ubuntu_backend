@@ -20,7 +20,7 @@ transporter.verify((error, success) => {
 
 export async function sendVerificationEmail(to: string, token: string) {
   // ✅ CORRECTION : Le lien doit pointer vers le backend qui traite le token
-  const backendUrl = process.env.BACKEND_URL || 'http://localhost:3001';
+  const backendUrl = process.env.BACKEND_URL || 'http://51.77.195.224:3001';
   const url = `${backendUrl}/auth/verify-token?token=${token}`;
   
   try {

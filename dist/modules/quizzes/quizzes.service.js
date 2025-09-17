@@ -162,10 +162,10 @@ let QuizzesService = class QuizzesService {
         }
         const mysql = require('mysql2/promise');
         const connection = await mysql.createConnection({
-            host: 'localhost',
-            user: 'root',
-            password: '',
-            database: 'chrono_carto'
+            host: process.env.DB_HOST || '51.77.195.224',
+            user: process.env.DB_USERNAME || 'chrono_user',
+            password: process.env.DB_PASSWORD || 'Abu3soib2004@',
+            database: process.env.DB_NAME || 'chrono_carto'
         });
         let saved;
         try {

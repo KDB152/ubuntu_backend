@@ -18,7 +18,7 @@ export class SecurityHeadersMiddleware implements NestMiddleware {
       "style-src 'self' 'unsafe-inline'; " +
       "img-src 'self' data: https:; " +
       "font-src 'self' data:; " +
-      "connect-src 'self' http://localhost:3001 https://chrono-carto-api.vercel.app; " +
+      "connect-src 'self' http://51.77.195.224:3001 https://chrono-carto-api.vercel.app; " +
       "frame-ancestors 'none'; " +
       "base-uri 'self'; " +
       "form-action 'self'"

@@ -23,7 +23,7 @@ async function bootstrap() {
         scriptSrc: ["'self'", "'unsafe-inline'"],
         styleSrc: ["'self'", "'unsafe-inline'"],
         imgSrc: ["'self'", "data:", "https:"],
-        connectSrc: ["'self'", "http://localhost:3001", "http://51.77.195.224:3001"],
+        connectSrc: ["'self'", "http://51.77.195.224:3001"],
       },
     },
     crossOriginEmbedderPolicy: false,
@@ -42,8 +42,8 @@ async function bootstrap() {
   // Configuration CORS
   app.enableCors({
     origin: [
-      'http://localhost:3000',
-      'http://localhost:3001',
+      'http://51.77.195.224:3000',
+      'http://51.77.195.224:3001',
       'http://192.168.1.11:3000',
       'http://192.168.1.11:3001',
       'http://51.77.195.224:3000',
